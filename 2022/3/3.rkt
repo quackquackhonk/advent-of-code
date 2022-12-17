@@ -4,12 +4,15 @@
   (call-with-input-file fnam rucksacks))
 
 (define (rucksacks in)
-  (define sacks
+  (define sack-strs
     (for/list ([l (in-lines in)])
-      (string->2-rucksack l)))
-  (define common-items (map common-item sacks))
-  (define priorites (map priority (flatten common-items)))
-  (foldl + 0 priorites))
+      l))
+  ;; (define common-items (map common-item sacks))
+  ;; (define priorites (map priority common-items))
+  (define groups (split-by-size 3 sack-strs))
+  (define badges (map group-common-item groups))
+  (define priorities (map priority badges))
+  (foldl + 0 priorities))
 
 ;; a Rucksack is a list of list of characters.
 ;; Each list has the same length
@@ -31,8 +34,12 @@
 
 ;; Returns a list of characters where each character is present in
 ;; every rucksack compartment
-(define (common-item sack)
-  (remove-duplicates (foldl list-common (first sack) (rest sack))))
+(define (common-items sack)
+  (foldl list-common (first sack) (rest sack)))
+
+;; given a list of rucksacks, finds the item common between all rucksacks
+(define (group-common-item group)
+  (first (common-items (map string->list group))))
 
 ;; given two lists, returns a list of all elements in l1 that are also
 ;; in l2
@@ -44,7 +51,7 @@
 
 (define (total-priority common sack)
   (define all-common (flatten (map (in-common common) sack)))
-  (foldr + 0 (map priority all-common)))
+  (foldl + 0 (map priority all-common)))
 
 (define (priority item)
   (let ([item-str (list->string (list item))])
