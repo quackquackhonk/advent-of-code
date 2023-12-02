@@ -1,0 +1,12 @@
+[package]
+name = "calibration"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = { workspace = true }
+itertools = { workspace = true }
+nom = { workspace = true }
+regex = { workspace = true }
+rstest = { workspace = true }
+thiserror = { workspace = true }
