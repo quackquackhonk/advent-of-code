@@ -40,8 +40,8 @@ pub enum BlockDraw {
 #[derive(Debug, PartialEq)]
 pub struct LargestPull {
     pub red: u64,
-    pub blue: u64,
     pub green: u64,
+    pub blue: u64,
 }
 
 impl LargestPull {
@@ -79,8 +79,8 @@ impl From<&Draw> for LargestPull {
         for block_draw in value {
             match block_draw {
                 BlockDraw::RedDraw(c) => red += c,
-                BlockDraw::GreenDraw(c) => blue += c,
-                BlockDraw::BlueDraw(c) => green += c,
+                BlockDraw::GreenDraw(c) => green += c,
+                BlockDraw::BlueDraw(c) => blue += c,
             };
         }
 
@@ -108,7 +108,7 @@ mod tests {
     )]
     #[case(
         "Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red",
-        LargestPull::new(6, 3, 15)
+        LargestPull::new(14, 3, 15)
     )]
     #[case(
         "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green",

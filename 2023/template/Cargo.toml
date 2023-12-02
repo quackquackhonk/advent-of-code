@@ -2,6 +2,7 @@
 name = "{{project-name}}"
 version = "0.1.0"
 edition = "2021"
+default-run = "part1"
 
 [dependencies]
 anyhow = { workspace = true }
@@ -10,11 +11,3 @@ nom = { workspace = true }
 regex = { workspace = true }
 rstest = { workspace = true }
 thiserror = { workspace = true }
-
-[[bin]]
-name = "part1"
-path = "bin/part1.rs"
-
-[[bin]]
-name = "part2"
-path = "bin/part2.rs"

@@ -1,8 +1,8 @@
-use {{crate_name}}::part1::process;
+use {{crate_name}}::part2::process;
 use anyhow::Result;
 
 fn main() -> anyhow::Result<()> {
-    let file = include_str!("../input1");
+    let file = include_str!("../../input2");
     let result = process(file)?;
 
     println!("{}", result);
