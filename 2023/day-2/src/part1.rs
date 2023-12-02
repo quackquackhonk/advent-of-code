@@ -12,7 +12,7 @@ pub fn process(input: &str) -> anyhow::Result<u64, AocError> {
 /// and None otherwise
 pub fn process_line(line: &str) -> Option<u64> {
     let (_, game) = parse_game(line).ok()?;
-    let largest = game.smallest_bag();
+    let largest = game.largest_pull();
 
     if largest.possible(12, 13, 14) {
         Some(game.id)

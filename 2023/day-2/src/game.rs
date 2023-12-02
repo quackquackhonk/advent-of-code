@@ -1,5 +1,9 @@
 use std::cmp::max;
 
+use rstest::rstest;
+
+use crate::parse::parse_game;
+
 /// A Game contains information about the choosing game played
 #[derive(Debug, PartialEq)]
 pub struct Game {
@@ -15,10 +19,10 @@ impl Game {
     }
     /// Scans the draws that occured in the game, and returns the smallest possible bag
     /// that the game could have been played with.
-    pub fn smallest_bag(&self) -> LargestPull {
-        self.draws
-            .iter()
-            .fold(LargestPull::empty(), |acc, draw| LargestPull::combine(acc, LargestPull::from(draw)))
+    pub fn largest_pull(&self) -> LargestPull {
+        self.draws.iter().fold(LargestPull::empty(), |acc, draw| {
+            LargestPull::combine(acc, LargestPull::from(draw))
+        })
     }
 }
 
@@ -81,5 +85,38 @@ impl From<&Draw> for LargestPull {
         }
 
         Self { red, green, blue }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use rstest::rstest;
+    use super::*;
+
+    #[rstest]
+    #[case(
+        "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green",
+        LargestPull::new(4, 2, 6)
+    )]
+    #[case(
+        "Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue",
+        LargestPull::new(1, 3, 4)
+    )]
+    #[case(
+        "Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red",
+        LargestPull::new(20, 13, 6)
+    )]
+    #[case(
+        "Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red",
+        LargestPull::new(6, 3, 15)
+    )]
+    #[case(
+        "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green",
+        LargestPull::new(6, 3, 2)
+    )]
+    fn test_largest_pull(#[case] input: &str, #[case] expected: LargestPull) -> anyhow::Result<()> {
+        let (_, game) = parse_game(input).unwrap();
+        assert_eq!(expected, game.largest_pull());
+        Ok(())
     }
 }
