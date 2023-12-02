@@ -1,9 +1,5 @@
 use std::cmp::max;
 
-use rstest::rstest;
-
-use crate::parse::parse_game;
-
 /// A Game contains information about the choosing game played
 #[derive(Debug, PartialEq)]
 pub struct Game {
@@ -68,6 +64,10 @@ impl LargestPull {
             max(left.blue, right.blue),
         )
     }
+
+    pub fn power(&self) -> u64 {
+        self.red * self.green * self.blue
+    }
 }
 
 impl From<&Draw> for LargestPull {
@@ -91,6 +91,7 @@ impl From<&Draw> for LargestPull {
 #[cfg(test)]
 mod tests {
     use rstest::rstest;
+    use crate::parse::parse_game;
     use super::*;
 
     #[rstest]

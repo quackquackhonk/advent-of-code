@@ -1,16 +1,29 @@
-use crate::aoc_error::AocError;
+use crate::parse::parse_game;
 
-pub fn process(_input: &str) -> anyhow::Result<String, AocError> {
-    todo!("day-2 part2 unimplemented!");
+pub fn process(input: &str) -> anyhow::Result<u64> {
+    let output = input.lines().filter_map(process_line).sum();
+    Ok(output)
+}
+
+pub fn process_line(line: &str) -> Option<u64> {
+    let (_, game) = parse_game(line).ok()?;
+    Some(game.largest_pull().power())
 }
 
 #[cfg(test)]
 mod tests {
-    
 
+    use super::*;
 
     #[test]
     fn test_process() -> anyhow::Result<()> {
-        todo!("day-2 part1 tests unimplemented!");
+        let input = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
+
+        assert_eq!(process(input)?, 2286);
+        Ok(())
     }
 }
