@@ -2,4 +2,4 @@ test part:
     cargo nextest run "part{{part}}"
 
 run part:
-    cargo watch -x check -x 'test --lib part{{part}}'  -x 'run part-{{part}}'
+    cargo watch -x check -x 'test --lib part{{part}}'  -x 'run --bin part{{part}}'

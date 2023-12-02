@@ -8,7 +8,7 @@ use nom::{
 
 use crate::game::{BlockDraw, Draw, Game};
 
-fn parse_game(input: &str) -> IResult<&str, Game> {
+pub fn parse_game(input: &str) -> IResult<&str, Game> {
     let (input, _) = tag("Game ")(input)?;
     let (input, id_str) = digit1(input)?;
     let (input, _) = tag(": ")(input)?;
@@ -20,13 +20,13 @@ fn parse_game(input: &str) -> IResult<&str, Game> {
     Ok((input, Game::new(id, draws)))
 }
 
-fn parse_draws(input: &str) -> IResult<&str, Draw> {
+pub fn parse_draws(input: &str) -> IResult<&str, Draw> {
     let input = input.trim();
     let (input, block_draws) = separated_list1(tag(","), parse_block_draw)(input)?;
     Ok((input, block_draws))
 }
 
-fn parse_block_draw(input: &str) -> IResult<&str, BlockDraw> {
+pub fn parse_block_draw(input: &str) -> IResult<&str, BlockDraw> {
     let input = input.trim();
     let (input, (count_str, color)) = separated_pair(digit1, space0, alpha1)(input)?;
 
@@ -54,7 +54,7 @@ mod tests {
     #[case("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green", Game::new(
         1,
         vec![
-            vec![BlockDraw::BlueDraw(3), BlockDraw::RedDraw(1)],
+            vec![BlockDraw::BlueDraw(3), BlockDraw::RedDraw(4)],
             vec![
                 BlockDraw::RedDraw(1),
                 BlockDraw::GreenDraw(2),
