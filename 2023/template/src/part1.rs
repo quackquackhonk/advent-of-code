@@ -1,6 +1,4 @@
-use crate::aoc_error::AocError;
-
-pub fn process(input: &str) -> anyhow::Result<String, AocError> {
+pub fn process(input: &str) -> anyhow::Result<()> {
     todo!("{{project-name}} part1 unimplemented!");
 }
 
