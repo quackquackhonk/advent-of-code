@@ -24,7 +24,7 @@ pub fn convert_if_part_number(
 ) -> Option<usize> {
     let convert = m.range().fold(false, |acc, digit_idx| {
         if !acc {
-            false || digit_touching_symbol(mask, digit_idx, line_idx)
+            acc || digit_touching_symbol(mask, digit_idx, line_idx)
         } else {
             acc
         }
