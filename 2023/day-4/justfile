@@ -1,0 +1,5 @@
+test part:
+    cargo nextest run "part"
+
+run part:
+    cargo watch -x check -x 'test --lib part'  -x 'run part'
