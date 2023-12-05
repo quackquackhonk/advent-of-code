@@ -1,5 +1,5 @@
 use day_4::part1::process;
-use anyhow::Result;
+
 
 fn main() -> anyhow::Result<()> {
     let file = include_str!("../../input1");
