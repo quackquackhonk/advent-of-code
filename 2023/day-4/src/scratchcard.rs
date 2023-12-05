@@ -15,19 +15,30 @@ impl ScratchCard {
     }
 
     pub fn calculate_points(&self) -> usize {
-        let num_matches = self.revealed.iter().fold(0, |acc, num| {
+        let num_matches = self.num_matches();
+
+        if num_matches > 0 {
+            // LOL
+            2_usize.pow(
+                num_matches
+                    .checked_sub(1_usize)
+                    .unwrap()
+                    .try_into()
+                    .unwrap(),
+            )
+        } else {
+            0
+        }
+    }
+
+    pub fn num_matches(&self) -> usize {
+        self.revealed.iter().fold(0, |acc, num| {
             if self.winning.contains(num) {
                 acc + 1
             } else {
                 acc
             }
-        });
-
-        if num_matches != 0 {
-            2_usize.pow(num_matches - 1)
-        } else {
-            0
-        }
+        })
     }
 }
 
