@@ -2,7 +2,7 @@
 name = "day-5"
 version = "0.1.0"
 edition = "2021"
-default-run = "part1"
+default-run = "part2"
 
 [dependencies]
 anyhow = { workspace = true }

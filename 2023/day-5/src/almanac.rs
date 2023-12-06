@@ -3,7 +3,7 @@ use std::ops::Range;
 use itertools::Itertools;
 
 #[derive(Debug)]
-pub struct Alamanac {
+pub struct Almanac {
     pub seeds: Vec<usize>,
     pub seed_to_soil: ConversionMap,
     pub soil_to_fertilizer: ConversionMap,
@@ -15,7 +15,7 @@ pub struct Alamanac {
 }
 
 #[derive(Debug, PartialEq, Clone, Copy)]
-pub enum AlamanacType {
+pub enum AlmanacType {
     Seed(usize),
     Soil(usize),
     Fertilizer(usize),
@@ -26,32 +26,42 @@ pub enum AlamanacType {
     Location(usize),
 }
 
-impl AlamanacType {
+impl AlmanacType {
     pub fn value(&self) -> usize {
         match self {
-            AlamanacType::Seed(x) => *x,
-            AlamanacType::Soil(x) => *x,
-            AlamanacType::Fertilizer(x) => *x,
-            AlamanacType::Water(x) => *x,
-            AlamanacType::Light(x) => *x,
-            AlamanacType::Temperature(x) => *x,
-            AlamanacType::Humidity(x) => *x,
-            AlamanacType::Location(x) => *x,
+            AlmanacType::Seed(x) => *x,
+            AlmanacType::Soil(x) => *x,
+            AlmanacType::Fertilizer(x) => *x,
+            AlmanacType::Water(x) => *x,
+            AlmanacType::Light(x) => *x,
+            AlmanacType::Temperature(x) => *x,
+            AlmanacType::Humidity(x) => *x,
+            AlmanacType::Location(x) => *x,
         }
     }
 }
 
-impl Alamanac {
-    pub fn lookup(&self, key: &AlamanacType) -> AlamanacType {
+impl Almanac {
+    pub fn expand_seeds(self) -> Almanac {
+        let seeds: Vec<usize> = self
+            .seeds
+            .chunks(2)
+            .flat_map(|s| s[0]..(s[0] + s[1]))
+            .collect();
+
+        Almanac { seeds, ..self }
+    }
+
+    pub fn lookup(&self, key: &AlmanacType) -> AlmanacType {
         match key {
-            AlamanacType::Seed(_) => self.seed_to_soil.lookup(key),
-            AlamanacType::Soil(_) => self.soil_to_fertilizer.lookup(key),
-            AlamanacType::Fertilizer(_) => self.fertilizer_to_water.lookup(key),
-            AlamanacType::Water(_) => self.water_to_light.lookup(key),
-            AlamanacType::Light(_) => self.light_to_temp.lookup(key),
-            AlamanacType::Temperature(_) => self.temp_to_humidity.lookup(key),
-            AlamanacType::Humidity(_) => self.humidity_to_location.lookup(key),
-            AlamanacType::Location(_) => *key,
+            AlmanacType::Seed(_) => self.seed_to_soil.lookup(key),
+            AlmanacType::Soil(_) => self.soil_to_fertilizer.lookup(key),
+            AlmanacType::Fertilizer(_) => self.fertilizer_to_water.lookup(key),
+            AlmanacType::Water(_) => self.water_to_light.lookup(key),
+            AlmanacType::Light(_) => self.light_to_temp.lookup(key),
+            AlmanacType::Temperature(_) => self.temp_to_humidity.lookup(key),
+            AlmanacType::Humidity(_) => self.humidity_to_location.lookup(key),
+            AlmanacType::Location(_) => *key,
         }
     }
 
@@ -59,10 +69,10 @@ impl Alamanac {
         self.seeds
             .iter()
             .map(|seed| {
-                let mut key = AlamanacType::Seed(*seed);
+                let mut key = dbg!(AlmanacType::Seed(*seed));
                 loop {
                     key = match key {
-                        AlamanacType::Location(x) => break x,
+                        AlmanacType::Location(x) => break x,
                         _ => self.lookup(&key),
                     };
                 }
@@ -73,20 +83,20 @@ impl Alamanac {
 
 #[derive(Debug)]
 pub struct ConversionMap {
-    pub ranges: Vec<AlamanacRange>,
+    pub ranges: Vec<AlmanacRange>,
 }
 
 impl ConversionMap {
-    pub fn lookup(&self, key: &AlamanacType) -> AlamanacType {
+    pub fn lookup(&self, key: &AlmanacType) -> AlmanacType {
         match key {
-            AlamanacType::Seed(x) => AlamanacType::Soil(self.generic_lookup(x)),
-            AlamanacType::Soil(x) => AlamanacType::Fertilizer(self.generic_lookup(x)),
-            AlamanacType::Fertilizer(x) => AlamanacType::Water(self.generic_lookup(x)),
-            AlamanacType::Water(x) => AlamanacType::Light(self.generic_lookup(x)),
-            AlamanacType::Light(x) => AlamanacType::Temperature(self.generic_lookup(x)),
-            AlamanacType::Temperature(x) => AlamanacType::Humidity(self.generic_lookup(x)),
-            AlamanacType::Humidity(x) => AlamanacType::Location(self.generic_lookup(x)),
-            AlamanacType::Location(x) => AlamanacType::Location(*x),
+            AlmanacType::Seed(x) => AlmanacType::Soil(self.generic_lookup(x)),
+            AlmanacType::Soil(x) => AlmanacType::Fertilizer(self.generic_lookup(x)),
+            AlmanacType::Fertilizer(x) => AlmanacType::Water(self.generic_lookup(x)),
+            AlmanacType::Water(x) => AlmanacType::Light(self.generic_lookup(x)),
+            AlmanacType::Light(x) => AlmanacType::Temperature(self.generic_lookup(x)),
+            AlmanacType::Temperature(x) => AlmanacType::Humidity(self.generic_lookup(x)),
+            AlmanacType::Humidity(x) => AlmanacType::Location(self.generic_lookup(x)),
+            AlmanacType::Location(x) => AlmanacType::Location(*x),
         }
     }
 
@@ -103,19 +113,19 @@ impl ConversionMap {
         *key
     }
 
-    pub fn new(ranges: Vec<AlamanacRange>) -> ConversionMap {
+    pub fn new(ranges: Vec<AlmanacRange>) -> ConversionMap {
         ConversionMap { ranges }
     }
 }
 
 #[derive(Debug)]
-pub struct AlamanacRange {
+pub struct AlmanacRange {
     pub source_start: usize,
     pub destination_start: usize,
     pub range_length: usize,
 }
 
-impl AlamanacRange {
+impl AlmanacRange {
     pub fn new(destination_start: usize, source_start: usize, range_length: usize) -> Self {
         Self {
             source_start,
@@ -151,19 +161,19 @@ mod tests {
     use rstest::rstest;
 
     use super::{
-        AlamanacRange,
-        AlamanacType::{self, *},
+        AlmanacRange,
+        AlmanacType::{self, *},
         ConversionMap,
     };
 
     #[rstest]
-    #[case((ConversionMap::new(vec![AlamanacRange::new(50, 98, 2), AlamanacRange::new(52, 50, 48)]), Seed(79)), Soil(81))]
-    #[case((ConversionMap::new(vec![AlamanacRange::new(50, 98, 2), AlamanacRange::new(52, 50, 48)]), Seed(14)), Soil(14))]
-    #[case((ConversionMap::new(vec![AlamanacRange::new(50, 98, 2), AlamanacRange::new(52, 50, 48)]), Seed(55)), Soil(57))]
-    #[case((ConversionMap::new(vec![AlamanacRange::new(50, 98, 2), AlamanacRange::new(52, 50, 48)]), Seed(13)), Soil(13))]
+    #[case((ConversionMap::new(vec![AlmanacRange::new(50, 98, 2), AlmanacRange::new(52, 50, 48)]), Seed(79)), Soil(81))]
+    #[case((ConversionMap::new(vec![AlmanacRange::new(50, 98, 2), AlmanacRange::new(52, 50, 48)]), Seed(14)), Soil(14))]
+    #[case((ConversionMap::new(vec![AlmanacRange::new(50, 98, 2), AlmanacRange::new(52, 50, 48)]), Seed(55)), Soil(57))]
+    #[case((ConversionMap::new(vec![AlmanacRange::new(50, 98, 2), AlmanacRange::new(52, 50, 48)]), Seed(13)), Soil(13))]
     pub fn test_conversion_map_lookup(
-        #[case] input: (ConversionMap, AlamanacType),
-        #[case] expected: AlamanacType,
+        #[case] input: (ConversionMap, AlmanacType),
+        #[case] expected: AlmanacType,
     ) -> anyhow::Result<()> {
         let (cv, seed) = input;
         assert_eq!(expected, cv.lookup(&seed));
@@ -171,8 +181,11 @@ mod tests {
     }
 
     #[rstest]
-    #[case((AlamanacRange::new(52, 50, 48), 79), Some(81))]
-    pub fn test_almanac_range_lookup(#[case] input: (AlamanacRange, usize), #[case] expected: Option<usize>) {
+    #[case((AlmanacRange::new(52, 50, 48), 79), Some(81))]
+    pub fn test_almanac_range_lookup(
+        #[case] input: (AlmanacRange, usize),
+        #[case] expected: Option<usize>,
+    ) {
         let (r, v) = input;
         assert_eq!(expected, r.lookup(&v));
     }
