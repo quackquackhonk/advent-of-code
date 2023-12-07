@@ -1,4 +1,4 @@
-pub fn process(input: &str) -> anyhow::Result<()> {
+pub fn process(input: &str) -> anyhow::Result<usize> {
     todo!("{{project-name}} part1 unimplemented!");
 }
 
@@ -9,6 +9,7 @@ mod tests {
 
     #[test]
     fn test_process() -> anyhow::Result<()> {
-        todo!("{{project-name}} part1 tests unimplemented!");
+        let input = "";
+        assert_eq!(0, process(input)?);
     }
 }
