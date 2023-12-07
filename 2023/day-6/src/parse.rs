@@ -1,4 +1,4 @@
-use itertools::Itertools;
+
 use nom::bytes::complete::take_until;
 use nom::character::complete::{digit1, space1};
 use nom::multi::separated_list1;

@@ -34,7 +34,7 @@ pub fn process(input: &str) -> anyhow::Result<usize> {
         },
     );
 
-    let output = total_cards_map.iter().fold(0, |acc, (key, val)| acc + val);
+    let output = total_cards_map.iter().fold(0, |acc, (_key, val)| acc + val);
 
     Ok(output)
 }

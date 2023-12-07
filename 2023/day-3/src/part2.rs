@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use itertools::Itertools;
+
 use regex::{Match, Regex};
 
 use crate::gear::Gear;
