@@ -1,5 +1,13 @@
+use crate::parse::parse_hands;
+
 pub fn process(input: &str) -> anyhow::Result<usize> {
-    todo!("day-7 part1 unimplemented!");
+    let mut hands = parse_hands(input);
+    hands.sort();
+    Ok(hands
+        .iter()
+        .enumerate()
+        .map(|(idx, hand)| (idx + 1) * hand.bid)
+        .sum())
 }
 
 #[cfg(test)]
