@@ -20,6 +20,23 @@ impl Reading {
         }
     }
 
+    pub fn extrapolate_back(&self) -> isize {
+        let prev_deriv = self.make_diffs()
+            .into_iter()
+            .rev()
+            // .tuple_windows()
+            .fold(0, |acc, diff| match diff.first() {
+                Some(d) => *d - acc,
+                None => unreachable!(),
+            });
+
+        match self.0.first() {
+            Some(l) => l - prev_deriv,
+            None => unreachable!(),
+        }
+
+    }
+
     pub fn make_diffs(&self) -> Vec<Vec<isize>> {
         let mut curr = self.0.clone();
         let mut differences = vec![];
