@@ -1,0 +1,21 @@
+#+TITLE: AOC 2024 in OCaml
+
+* Configuration files
+
+** Justfile
+#+begin_src just :tangle justfile
+  build:
+      echo "BUILD NOT CONFIGURED"
+
+  test:
+      echo "TEST NOT CONFIGURED"
+#+end_src
+
+** Project Setup
+
+#+begin_src emacs-lisp :tangle .dir-locals.el
+#+end_src
+
+* Links
+* Tasks
+* Questions

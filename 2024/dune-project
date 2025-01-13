@@ -1,0 +1,20 @@
+(lang dune 3.17)
+
+(name aoc2024)
+
+(generate_opam_files true)
+(opam_file_location inside_opam_directory)
+
+(source
+ (github quackquackhonk/advent-of-code))
+
+(authors "Sahana Tankala <sahanatankala@gmail.com>")
+
+(maintainers "Sahana Tankala <sahanatankala@gmail.com>")
+
+(package
+ (name aoc2024)
+ (description "Advent of Code 2024 challenges")
+ (depends ocaml))
+
+; See the complete stanza docs at https://dune.readthedocs.io/en/stable/reference/dune-project/index.html
