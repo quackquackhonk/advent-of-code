@@ -15,6 +15,6 @@
 (package
  (name aoc2024)
  (description "Advent of Code 2024 challenges")
- (depends ocaml))
+ (depends ocaml re))
 
 ; See the complete stanza docs at https://dune.readthedocs.io/en/stable/reference/dune-project/index.html

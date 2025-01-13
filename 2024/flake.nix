@@ -26,7 +26,10 @@
 
         buildInputs = [
           # Add library dependencies here
-
+          ocamlPackages.findlib
+          ocamlPackages.ppx_deriving
+          ocamlPackages.ppx_inline_test
+          ocamlPackages.re
         ];
 
         nativeBuildInputs = with pkgs; [
@@ -36,9 +39,6 @@
           ocamlPackages.utop
           ocamlPackages.ocamlformat
           ocamlPackages.ocaml-lsp
-          ocamlPackages.ppx_deriving
-          ocamlPackages.ppx_inline_test
-          ocamlPackages.re
         ];
       in
       {

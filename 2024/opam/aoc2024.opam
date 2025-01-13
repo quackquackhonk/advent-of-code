@@ -8,6 +8,7 @@ bug-reports: "https://github.com/quackquackhonk/advent-of-code/issues"
 depends: [
   "dune" {>= "3.17"}
   "ocaml"
+  "re"
   "odoc" {with-doc}
 ]
 build: [

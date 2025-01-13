@@ -1,5 +1,5 @@
 (library
  (name aoc2024)
+ (libraries re ppx_inline_test ppx_deriving)
  (inline_tests)
- (libraries re)
  (preprocess (pps ppx_inline_test)))
