@@ -7,6 +7,7 @@ end
 module Day1 : DayType = Day1
 module Day2 : DayType = Day2
 module Day3 : DayType = Day3
+module Day4 : DayType = Day4
 
 
 (* Read a file into a string *)

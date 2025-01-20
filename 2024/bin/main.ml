@@ -19,7 +19,8 @@ let proc_map: (string -> int) IntMap.t =
   @@ List.to_seq [
          (1, Day1.process);
          (2, Day2.process);
-         (3, Day3.process)
+         (3, Day3.process);
+         (4, Day4.process)
        ]
 
 let proc =
