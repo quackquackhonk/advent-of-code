@@ -38,7 +38,7 @@
           ocamlPackages.findlib
           ocamlPackages.utop
           ocamlPackages.ocamlformat
-          ocamlPackages.lsp
+          ocamlPackages.ocaml-lsp
         ];
       in
       {

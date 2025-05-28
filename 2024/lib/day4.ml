@@ -1,5 +1,8 @@
+let to_find = "XMAS"
+
 module Coord = struct
   type t = { row: int; col: int}
+  [@@deriving show]
 
   let make r c = { row = r; col = c }
   let incr_row { row = r; col = c} =
@@ -10,20 +13,23 @@ end
 
 module Window = struct
   type t = { start: Coord.t; end': Coord.t }
+  [@@deriving show]
 
   let make size =
     let s = Coord.make 0 0 in
     let e = Coord.make size size in
     { start = s; end' = e }
-  let shift_left { start = s; end' = e} =
+  let shift_right { start = s; end' = e} =
     { start = Coord.incr_col s; end' = Coord.incr_col e }
   let shift_down { start = s; end' = e} =
-    { start = Coord.incr_row s; end' = Coord.incr_row e }
+    let n_s = Coord.incr_row s in
+    let n_e = Coord.incr_row e in
+    { start = Coord.make n_s.row 0; end' = Coord.make n_e.row (String.length to_find) }
 
   let shift num_rows num_cols window =
     let new_col = window.end'.col + 1 in
     let new_row = window.end'.row + 1 in
-    if new_col <= num_cols then Some (shift_left window)
+    if new_col <= num_cols then Some (shift_right window)
     else if new_row <= num_rows then Some (shift_down window)
     else None
 
@@ -39,8 +45,6 @@ module Window = struct
     List.filteri drop_rows input
     |> List.map drop_cols
 end
-
-let to_find = "XMAS"
 
 let is_word w =
   w = to_find || w = (Common.str_rev to_find)
@@ -73,7 +77,7 @@ let find_words input window =
           + find_vert_words input_window
           + find_diag_words input_window in
   let _ = print_endline "Window...." in
-  let _ = List.iter print_endline input_window in
+  let _ = print_endline @@ Window.show window in
   let _ = print_endline @@ string_of_int r in
   r
 
