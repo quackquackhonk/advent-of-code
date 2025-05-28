@@ -48,6 +48,8 @@ let is_word w =
 let find_horz_words input =
   List.length (List.filter is_word input)
 
+let%test _ = find_horz_words ["XMAS"; "...."; "SAMX"; "....";] = 2
+
 let get_char idx str = str.[idx]
 
 let find_vert_words input =
@@ -55,21 +57,30 @@ let find_vert_words input =
   let rotated_input = List.init (List.length input) vert_slice in
   find_horz_words rotated_input
 
+let%test _ = find_vert_words ["X.S."; "M.A."; "A.M."; "S.X."] = 2
+
 let find_diag_words input =
   let x = Common.implode @@ List.mapi get_char input in
   let y = Common.implode @@ List.mapi get_char (List.rev input) in
   let words = [x; y] in
   find_horz_words words
 
+let%test _ = find_diag_words ["X..X"; ".MM."; ".AA."; "S..S"] = 2
+
 let find_words input window =
   let input_window = Window.extract input window in
-  find_horz_words input_window
-  + find_vert_words input_window
-  + find_diag_words input_window
+  let r = find_horz_words input_window
+          + find_vert_words input_window
+          + find_diag_words input_window in
+  let _ = print_endline "Window...." in
+  let _ = List.iter print_endline input_window in
+  let _ = print_endline @@ string_of_int r in
+  r
+
 
 let rec count_words input next win total =
     match win with
-      None -> 0
+      None -> total
     | Some p -> count_words input next (next p) (total + find_words input p)
 
 let count_all_words word input =
