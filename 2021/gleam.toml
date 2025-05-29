@@ -1,4 +1,4 @@
-name = "gleam2022"
+name = "aoc"
 version = "1.0.0"
 
 # Fill out these fields if you intend to generate HTML documentation or publish
@@ -14,6 +14,8 @@ version = "1.0.0"
 
 [dependencies]
 gleam_stdlib = ">= 0.44.0 and < 2.0.0"
+argv = ">= 1.0.2 and < 2.0.0"
+simplifile = ">= 2.2.1 and < 3.0.0"
 
 [dev-dependencies]
 gleeunit = ">= 1.0.0 and < 2.0.0"
